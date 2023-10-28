@@ -1,0 +1,47 @@
+.calculator {
+    background-color: #f5f5f5;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 20px;
+}
+
+.calculator h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.calculator_step {
+    margin-bottom: 20px;
+}
+
+.calculator_step h3 {
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+.calculator__form-input {
+    margin-bottom: 10px;
+}
+
+.calculator__form-input label {
+    display: block;
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.calculator__form-input input {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    padding: 5px;
+    width: 100%;
+}
+
+.calculator__form-input select {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    padding: 5px;
+    width: 100%;
+}
