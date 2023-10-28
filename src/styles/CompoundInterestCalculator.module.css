@@ -11,12 +11,14 @@
     max-width: 600px;
     box-sizing: border-box;
     background: linear-gradient(to bottom, #f5f7fa, #e2e8f0);
-    margin-left: 1rem; 
+    background:#ffffff;
+    margin-left: 1rem;
+    border: 2px solid #ccc;
 }
 
 .formControl,
 .inputField {
-    margin: 0.25rem 0; 
+    margin: 0.25rem 0;
     width: 100%;
     max-width: 250px;
     background-color: #ffffff;
@@ -25,15 +27,14 @@
 
 .result {
     margin-top: 1rem;
-    padding: 5px; 
+    padding: 5px;
     text-align: center;
 }
 
 .step {
-    /* background-color: #ffffff; */
     margin-top: 0px;
     padding: 5px;
-    margin-bottom: 0px;
+    margin-bottom: 4px;
     border-radius: 5px;
     /* box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1); */
     display: flex;
@@ -68,6 +69,7 @@
 }
 
 .step h3 {
+    margin-top: 0.4rem;
     margin-bottom: 0.2rem;
     /* Ajusta este valor según tus preferencias */
 }
@@ -78,9 +80,61 @@
 }
 
 .fullText {
+    margin: 0.25rem 0;
     width: 100%;
-    margin: 0.25rem 0; 
-    width: 100%;
-    max-width: 250px;
+    /* max-width: 250px; */
     background-color: #ffffff;
+}
+
+.buttonContainer {
+    display: flex;
+    justify-content: center;
+    /* Centra los elementos horizontalmente */
+    align-items: center;
+    /* Centra los elementos verticalmente */
+    width: 100%;
+    margin-top: 1rem;
+    gap: 10rem;
+    /* Espacio entre los botones */
+}
+
+.whiteButton {
+    background-color: white;
+    color: black;
+    /* Color del texto */
+    border: 1px solid #ccc;
+    /* Borde opcional */
+    padding: 10px 24px;
+    /* Aumenta el padding para hacer el botón más grande */
+    font-weight: bold;
+    /* Letra más gruesa */
+    font-size: 1rem;
+}
+
+.blueButton {
+    border: 1px solid #ccc;
+    /* Borde opcional */
+    padding: 10px 24px;
+    /* Aumenta el padding para hacer el botón más grande */
+    font-weight: bold;
+    /* Letra más gruesa */
+    font-size: 1rem;
+}
+
+.whiteButton:hover {
+    background-color: #f5f5f5;
+    /* Color de fondo al pasar el mouse */
+}
+
+.errorText {
+    background-color: #f5f7fa;
+    background: #f5f7fa;
+    padding: 5px 0;
+    font-size: 0.8rem;
+    color: red;
+}
+
+.errorField .MuiFormHelperText-root {
+    margin: 0;
+    padding: 0;
 }
