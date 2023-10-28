@@ -35,74 +35,112 @@ export default function CompoundInterestCalculator() {
 
     return (
         <div className={styles.calculator}>
-            <h2>Calculadora de interés compuesto</h2>
-            <TextField
-                id="principal"
-                label="Inversión inicial"
-                type="number"
-                value={principal}
-                onChange={(e) => setPrincipal(e.target.value)}
-                variant="outlined"
-                margin="normal"
-            />
-            <TextField
-                id="contribution"
-                label="Contribución"
-                type="number"
-                value={contribution}
-                onChange={(e) => setContribution(e.target.value)}
-                variant="outlined"
-                margin="normal"
-            />
-            <FormControl variant="outlined" className={styles.formControl}>
-                <InputLabel id="contribution-frequency-label">Frecuencia de contribución</InputLabel>
-                <Select
-                    labelId="contribution-frequency-label"
-                    id="contribution-frequency"
-                    value={contributionFrequency}
-                    onChange={(e) => setContributionFrequency(e.target.value)}
-                    label="Frecuencia de contribución"
-                >
-                    <MenuItem value={1}>Anual</MenuItem>
-                    <MenuItem value={2}>Semestral</MenuItem>
-                    <MenuItem value={4}>Trimestral</MenuItem>
-                    <MenuItem value={12}>Mensual</MenuItem>
-                </Select>
-            </FormControl>
-            <TextField
-                id="time"
-                label="Tiempo (en años)"
-                type="number"
-                value={time}
-                onChange={(e) => setTime(e.target.value)}
-                variant="outlined"
-                margin="normal"
-            />
-            <TextField
-                id="rate"
-                label="Tasa de interés anual"
-                type="number"
-                value={rate}
-                onChange={(e) => setRate(e.target.value)}
-                variant="outlined"
-                margin="normal"
-            />
+            {/* Paso 1: Inversión Inicial */}
+            <div className={styles.step}>
+                <div className={styles.step}>
+                    <h3>Inversión Inicial</h3>
+                    <p>Define cuánto dinero inicialmente quieres invertir.</p>
+                    <TextField
+                        id="principal"
+                        label="Cantidad inicial"
+                        type="number"
+                        value={principal}
+                        onChange={(e) => setPrincipal(e.target.value)}
+                        variant="outlined"
+                        margin="normal"
+                        className={styles.formControl}
+                    />
+                </div>
+            </div>
+            {/* Paso 4: Interés */}
+            <div className={styles.step}>
+                <div className={styles.step}>
+                    <h3>Interés</h3>
+                    <p>Establece la tasa de interés y cómo se capitalizará.</p>
+                    <div className={styles.stepHalf}>
+                        <TextField
+                            id="rate"
+                            label="Tasa de interés"
+                            type="number"
+                            value={rate}
+                            onChange={(e) => setRate(e.target.value)}
+                            variant="outlined"
+                            margin="normal"
+                            fullWidth
+                            className={styles.formControl}
+                        />
+                        <FormControl variant="outlined" className={styles.formControl} fullWidth>
+                            <InputLabel id="frequency-label">Frecuencia de capitalización</InputLabel>
+                            <Select
+                                labelId="frequency-label"
+                                id="frequency"
+                                value={frequency}
+                                onChange={(e) => setFrequency(e.target.value)}
+                                label="Frecuencia de capitalización"
+                            >
+                                <MenuItem value={1}>Anual</MenuItem>
+                                <MenuItem value={2}>Semestral</MenuItem>
+                                <MenuItem value={4}>Trimestral</MenuItem>
+                                <MenuItem value={12}>Mensual</MenuItem>
+                            </Select>
+                        </FormControl>
+                    </div>
+                </div>
+            </div>
 
-            <FormControl variant="outlined" className={styles.formControl}>
-                <InputLabel id="frequency-label">Frecuencia de capitalización</InputLabel>
-                <Select
-                    labelId="frequency-label"
-                    id="frequency"
-                    value={frequency}
-                    onChange={(e) => setFrequency(e.target.value)}
-                    label="Frecuencia de capitalización"
-                >
-                    <MenuItem value={1}>Anual</MenuItem>
-                    <MenuItem value={2}>Semestral</MenuItem>
-                    <MenuItem value={4}>Trimestral</MenuItem>
-                    <MenuItem value={12}>Mensual</MenuItem>
-                </Select>
-            </FormControl>
+            {/* Paso 3: Cantidad de Años */}
+            <div className={styles.step}>
+                <div className={styles.step}>
+                    <h3>Cantidad de Años</h3>
+                    <p>Define cuántos años mantendrás la inversión.</p>
+                    <TextField
+                        id="time"
+                        label="Tiempo (en años)"
+                        type="number"
+                        value={time}
+                        onChange={(e) => setTime(e.target.value)}
+                        variant="outlined"
+                        margin="normal"
+                        className={styles.formControl}
+                    />
+                </div>
+            </div>
+
+            {/* Paso 2: Aportes Periódicos */}
+            <div className={styles.step}>
+                <div className={styles.step}>
+                    <h3>Aportes Periódicos</h3>
+                    <p>Establece los aportes adicionales que harás y su frecuencia.</p>
+                    <div className={styles.stepHalf}>
+                        <TextField
+                            id="contribution"
+                            label="Aportes periódicos"
+                            type="number"
+                            value={contribution}
+                            onChange={(e) => setContribution(e.target.value)}
+                            variant="outlined"
+                            margin="normal"
+                            className={styles.formControl}
+                        />
+                        <FormControl variant="outlined" className={styles.formControl} fullWidth>
+                            <InputLabel id="contribution-frequency-label">Frecuencia de los aportes</InputLabel>
+                            <Select
+                                labelId="contribution-frequency-label"
+                                id="contribution-frequency"
+                                value={contributionFrequency}
+                                onChange={(e) => setContributionFrequency(e.target.value)}
+                                label="Frecuencia de los aportes"
+                            >
+                                <MenuItem value={1}>Anual</MenuItem>
+                                <MenuItem value={2}>Semestral</MenuItem>
+                                <MenuItem value={4}>Trimestral</MenuItem>
+                                <MenuItem value={12}>Mensual</MenuItem>
+                            </Select>
+                        </FormControl>
+                    </div>
+                </div>
+            </div>
+
 
             <Button variant="contained" color="primary" onClick={calculateInterest}>
                 Calcular
