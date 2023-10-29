@@ -69,10 +69,11 @@ export default function CompoundInterestCalculator() {
 
     const getFinalBalance = () => {
         if (result.length > 0) {
-            return `$${result[result.length - 1].Final_Balance.toFixed(2)}`;
+            return result[result.length - 1].Final_Balance;
         }
-        return '$0';
+        return 0;
     };
+
     const getTotalInvested = () => {
         if (result.length > 0) {
             const lastItem = result[result.length - 1];
@@ -80,9 +81,10 @@ export default function CompoundInterestCalculator() {
         }
         return 0;
     };
+
     const getTotalGains = () => {
         if (result.length > 0) {
-            return result[result.length - 1].Final_Balance - getTotalInvested();
+            return getFinalBalance() - getTotalInvested();
         }
         return 0;
     };
@@ -280,13 +282,13 @@ export default function CompoundInterestCalculator() {
             </Grid >
 
             {/* Sección del Gráfico */}
-            < Grid item xs={12} md={8} >
+            <Grid item xs={12} md={8} style={{ marginTop: '40px' }}>
                 <Grid container spacing={2}>
 
                     <Grid item xs={12}>
                         <Box textAlign="center" mb={2}>
                             <Typography variant="h3" color="primary" style={{ fontWeight: 'bold' }}>
-                                {getFinalBalance().toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                                ${getFinalBalance().toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                             </Typography>
                             <Typography variant="h6">
                                 Total al final
@@ -300,7 +302,7 @@ export default function CompoundInterestCalculator() {
                                 Tu inversión
                             </Typography>
                             <Typography variant="h5" style={{ fontWeight: 'bold' }}>
-                                ${getTotalInvested().toFixed(2).toLocaleString()}
+                                ${getTotalInvested().toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                             </Typography>
                         </Box>
                     </Grid>
@@ -311,7 +313,7 @@ export default function CompoundInterestCalculator() {
                                 Tus ganancias
                             </Typography>
                             <Typography variant="h5" style={{ fontWeight: 'bold' }}>
-                                ${getTotalGains().toFixed(2).toLocaleString()}
+                                ${getTotalGains().toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                             </Typography>
                         </Box>
                     </Grid>
@@ -321,7 +323,7 @@ export default function CompoundInterestCalculator() {
                 <div style={{ width: '100%', height: 400 }}>
                     <InvestmentGrowthChart data={result} />
                 </div>
-            </Grid >
+            </Grid>
         </Grid >
 
     );
