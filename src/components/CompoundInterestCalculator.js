@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { TextField, Button, Select, MenuItem, FormControl, InputLabel, Grid } from '@mui/material';
+import { TextField, Button, Select, MenuItem, FormControl, InputLabel, Grid, Box, Typography } from '@mui/material';
 import styles from '../styles/CompoundInterestCalculator.module.css';
 import InvestmentGrowthChart from '../components/charts/InvestmentGrowthChart';
 
@@ -133,6 +133,16 @@ export default function CompoundInterestCalculator() {
 
         setErrors(newErrors);
         return isValid;
+    };
+    const getTotalInvested = () => {
+        return principal * time + contribution * contributionFrequency * time;
+    };
+
+    const getTotalGains = () => {
+        if (result.length > 0) {
+            return result[result.length - 1].Final_Balance - getTotalInvested();
+        }
+        return 0;
     };
     const calculateInterest = async () => {
         if (!validateFields()) return;
@@ -297,6 +307,22 @@ export default function CompoundInterestCalculator() {
             </Grid>
             {/* Sección del Gráfico */}
             <Grid item xs={12} md={8}>
+                <Grid item xs={12}>
+                    <Box textAlign="center" mb={2}>
+                        <Typography variant="h6">Resumen de la Inversión</Typography>
+                        <Typography variant="h4">$0</Typography> {/* Aquí iría el valor total al final del periodo */}
+                        <Grid container justifyContent="space-between" mt={1}>
+                            <Grid item>
+                                <Typography variant="body1">Dinero Invertido</Typography>
+                                <Typography variant="body2">${getTotalInvested().toFixed(2)}</Typography>
+                            </Grid>
+                            <Grid item>
+                                <Typography variant="body1">Total Ganancias</Typography>
+                                <Typography variant="body2">${getTotalGains().toFixed(2)}</Typography>
+                            </Grid>
+                        </Grid>
+                    </Box>
+                </Grid>
                 <div style={{ width: '100%', height: 400 }}>
                     {/* <InvestmentGrowthChart data={result.length > 0 ? result : dummyData} /> */}
                     <InvestmentGrowthChart data={result} />
