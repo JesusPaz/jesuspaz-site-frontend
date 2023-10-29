@@ -11,7 +11,7 @@
     max-width: 600px;
     box-sizing: border-box;
     background: linear-gradient(to bottom, #f5f7fa, #e2e8f0);
-    background:#ffffff;
+    background: #ffffff;
     margin-left: 1rem;
     border: 2px solid #ccc;
 }
@@ -88,14 +88,21 @@
 
 .buttonContainer {
     display: flex;
-    justify-content: center;
-    /* Centra los elementos horizontalmente */
-    align-items: center;
-    /* Centra los elementos verticalmente */
+    /* justify-content: center; */
+    /* align-items: center; */
     width: 100%;
     margin-top: 1rem;
-    gap: 10rem;
-    /* Espacio entre los botones */
+    font-weight: bold;
+    /* font-size: 1rem; */
+}
+.button {
+    display: flex;
+    /* justify-content: center; */
+    /* align-items: center; */
+    width: 100%;
+    /* margin-top: 1rem; */
+    font-weight: bold;
+    /* font-size: 1rem; */
 }
 
 .whiteButton {

@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import { TextField, Button, Select, MenuItem, FormControl, InputLabel, Grid, Box, Typography } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
+import useMediaQuery from '@mui/material/useMediaQuery';
 import styles from '../styles/CompoundInterestCalculator.module.css';
 import InvestmentGrowthChart from '../components/charts/InvestmentGrowthChart';
 
@@ -14,6 +16,8 @@ export default function CompoundInterestCalculator() {
     const [contributionFrequency, setContributionFrequency] = useState(1);
     const [result, setResult] = useState([]);
     const [errors, setErrors] = useState({});
+    const theme = useTheme();
+    const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
     const resetValues = () => {
         setPrincipal(0);
         setRate(0);
@@ -226,13 +230,32 @@ export default function CompoundInterestCalculator() {
                     </div>
 
                     <div className={styles.buttonContainer}>
-                        <Button variant="outlined" color="secondary" className={styles.whiteButton} onClick={() => resetValues()}>
-                            Reiniciar
-                        </Button>
-                        <Button variant="contained" color="primary" className={styles.blueButton} onClick={calculateInterest}>
-                            Calcular
-                        </Button>
+                        <Grid container spacing={2}>
+                            <Grid item xs={12} sm={6}>
+                                <Button
+                                    variant="outlined"
+                                    color="secondary"
+                                    fullWidth={isSmallScreen}
+                                    onClick={() => resetValues()}
+                                    className={styles.button}
+                                >
+                                    Reiniciar
+                                </Button>
+                            </Grid>
+                            <Grid item xs={12} sm={6}>
+                                <Button
+                                    variant="contained"
+                                    color="primary"
+                                    fullWidth={isSmallScreen}
+                                    onClick={calculateInterest}
+                                    className={styles.button}
+                                >
+                                    Calcular
+                                </Button>
+                            </Grid>
+                        </Grid>
                     </div>
+
                 </div>
             </Grid>
             {/* Sección del Gráfico */}
