@@ -23,78 +23,6 @@ export default function CompoundInterestCalculator() {
         setContributionFrequency(1);
         setResult([]);
     };
-    const dummyData = [
-        {
-            "Year": 1,
-            "Total_Contributions": 1200,
-            "Total_Interest": 1000.0000000000018,
-            "Principal": "10000",
-            isDummy: true
-        },
-        {
-            "Year": 2,
-            "Total_Contributions": 2400,
-            "Total_Interest": 2220.0000000000055,
-            "Principal": "10000",
-            isDummy: true
-        },
-        {
-            "Year": 3,
-            "Total_Contributions": 3600,
-            "Total_Interest": 3682.0000000000073,
-            "Principal": "10000",
-            isDummy: true
-        },
-        {
-            "Year": 4,
-            "Total_Contributions": 4800,
-            "Total_Interest": 5410.200000000008,
-            "Principal": "10000",
-            isDummy: true
-        },
-        {
-            "Year": 5,
-            "Total_Contributions": 6000,
-            "Total_Interest": 7431.220000000012,
-            "Principal": "10000",
-            isDummy: true
-        },
-        {
-            "Year": 6,
-            "Total_Contributions": 7200,
-            "Total_Interest": 9774.342000000015,
-            "Principal": "10000",
-            isDummy: true
-        },
-        {
-            "Year": 7,
-            "Total_Contributions": 8400,
-            "Total_Interest": 12471.776200000018,
-            "Principal": "10000",
-            isDummy: true
-        },
-        {
-            "Year": 8,
-            "Total_Contributions": 9600,
-            "Total_Interest": 15558.953820000024,
-            "Principal": "10000",
-            isDummy: true
-        },
-        {
-            "Year": 9,
-            "Total_Contributions": 10800,
-            "Total_Interest": 19074.849202000027,
-            "Principal": "10000",
-            isDummy: true
-        },
-        {
-            "Year": 10,
-            "Total_Contributions": 12000,
-            "Total_Interest": 23062.33412220003,
-            "Principal": "10000",
-            isDummy: true
-        }
-    ];
     const validateFields = () => {
         let isValid = true;
         let newErrors = {};
@@ -134,10 +62,20 @@ export default function CompoundInterestCalculator() {
         setErrors(newErrors);
         return isValid;
     };
-    const getTotalInvested = () => {
-        return principal * time + contribution * contributionFrequency * time;
-    };
 
+    const getFinalBalance = () => {
+        if (result.length > 0) {
+            return `$${result[result.length - 1].Final_Balance.toFixed(2)}`;
+        }
+        return '$0';
+    };
+    const getTotalInvested = () => {
+        if (result.length > 0) {
+            const lastItem = result[result.length - 1];
+            return parseFloat(principal) + parseFloat(lastItem.Total_Contributions);
+        }
+        return 0;
+    };
     const getTotalGains = () => {
         if (result.length > 0) {
             return result[result.length - 1].Final_Balance - getTotalInvested();
@@ -164,7 +102,6 @@ export default function CompoundInterestCalculator() {
 
         const data = await response.json();
         const dataWithInitialInvestment = data.map(item => ({ ...item, Principal: principal }));
-        console.log(dataWithInitialInvestment);
         setResult(dataWithInitialInvestment);
     };
 
@@ -296,13 +233,6 @@ export default function CompoundInterestCalculator() {
                             Calcular
                         </Button>
                     </div>
-                    {result.length > 0 && (
-                        <div className={styles.result}>
-                            <p>
-                                Tu inversión valdrá {result[result.length - 1].Final_Balance.toFixed(2)} al final del período.
-                            </p>
-                        </div>
-                    )}
                 </div>
             </Grid>
             {/* Sección del Gráfico */}
@@ -310,7 +240,7 @@ export default function CompoundInterestCalculator() {
                 <Grid item xs={12}>
                     <Box textAlign="center" mb={2}>
                         <Typography variant="h6">Resumen de la Inversión</Typography>
-                        <Typography variant="h4">$0</Typography> {/* Aquí iría el valor total al final del periodo */}
+                        <Typography variant="h4">{getFinalBalance()}</Typography>
                         <Grid container justifyContent="space-between" mt={1}>
                             <Grid item>
                                 <Typography variant="body1">Dinero Invertido</Typography>
@@ -324,7 +254,6 @@ export default function CompoundInterestCalculator() {
                     </Box>
                 </Grid>
                 <div style={{ width: '100%', height: 400 }}>
-                    {/* <InvestmentGrowthChart data={result.length > 0 ? result : dummyData} /> */}
                     <InvestmentGrowthChart data={result} />
                 </div>
             </Grid>
