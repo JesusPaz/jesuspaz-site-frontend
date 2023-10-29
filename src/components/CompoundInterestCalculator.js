@@ -1,7 +1,10 @@
 import { useState } from 'react';
 import {
-    TextField, Button, Select, MenuItem, FormControl, InputLabel, Grid, Box, Typography, Card, CardContent, useTheme, useMediaQuery, Divider
+    TextField, Button, Select, MenuItem, FormControl, InputLabel, Grid, Box, Typography, Card, CardContent, useTheme, useMediaQuery, Divider, InputAdornment
 } from '@mui/material';
+import AttachMoney from '@mui/icons-material/AttachMoney';
+import CalendarToday from '@mui/icons-material/CalendarToday';
+import Percent from '@mui/icons-material/Percent';
 import styles from '../styles/CompoundInterestCalculator.module.css';
 import InvestmentGrowthChart from '../components/charts/InvestmentGrowthChart';
 
@@ -31,36 +34,46 @@ export default function CompoundInterestCalculator() {
         let isValid = true;
         let newErrors = {};
 
-        // if (principal <= 0 || !Number.isInteger(principal)) {
-        //     isValid = false;
-        //     newErrors.principal = "⚠️ El capital inicial debe ser un número entero mayor a 0.";
-        // }
-        if (principal > 100000000) {
+        const principalNum = Number(principal);
+        const rateNum = Number(rate);
+        const timeNum = Number(time);
+        const contributionNum = Number(contribution);
+
+        if (principalNum <= 0 || !Number.isInteger(principalNum)) {
             isValid = false;
-            newErrors.principal = "⚠️ El capital inicial debe ser menor a 100000000.";
+            newErrors.principal = "⚠️ El capital inicial debe ser un número entero mayor a 0.";
+        } else if (principalNum > 100000000) {
+            isValid = false;
+            newErrors.principal = "⚠️ El capital inicial debe ser menor a 100,000,000.";
         }
-        if (rate <= 0) {
+
+        if (rateNum <= 0) {
             isValid = false;
             newErrors.rate = "⚠️ La tasa de interés debe ser mayor a 0.";
-        }
-        if (rate > 100) {
+        } else if (rateNum > 100) {
             isValid = false;
             newErrors.rate = "⚠️ La tasa de interés debe ser menor a 100.";
         }
-        // if (!Number.isInteger(time) || time <= 0) {
-        //     isValid = false;
-        //     newErrors.time = "⚠️ La cantidad de años debe ser un número entero y mayor a 0.";
-        // }
-        if (time > 200) {
+
+        // Validar que la tasa tenga un máximo de 5 decimales
+        const decimalPlaces = (rateNum.toString().split('.')[1] || []).length;
+        if (decimalPlaces > 5) {
+            isValid = false;
+            newErrors.rate = "⚠️ La tasa de interés puede tener hasta 5 decimales.";
+        }
+
+        if (!Number.isInteger(timeNum) || timeNum <= 0) {
+            isValid = false;
+            newErrors.time = "⚠️ La cantidad de años debe ser un número entero y mayor a 0.";
+        } else if (timeNum > 200) {
             isValid = false;
             newErrors.time = "⚠️ La cantidad de años debe ser menor a 200.";
         }
 
-        // Validar que la tasa tenga un máximo de 5 decimales
-        const decimalPlaces = (rate.toString().split('.')[1] || []).length;
-        if (decimalPlaces > 5) {
+        // Validaciones para los aportes periódicos
+        if (!Number.isInteger(Number(contributionNum)) || contributionNum < -100000000 || contributionNum > 100000000) {
             isValid = false;
-            newErrors.rate = "⚠️ La tasa de interés puede tener hasta 5 decimales.";
+            newErrors.contribution = "⚠️ Los aportes periódicos deben ser un número entero entre -100,000,000 y 100,000,000.";
         }
 
         setErrors(newErrors);
@@ -121,7 +134,7 @@ export default function CompoundInterestCalculator() {
                             {/* Paso 1: Inversión Inicial */}
                             <Grid item spacing={2}>
                                 <Typography variant="h6" gutterBottom >Inversión Inicial</Typography>
-                                <Typography variant="body1" gutterBottom >Define cuánto dinero inicialmente quieres invertir.</Typography>
+                                <Typography variant="body1" gutterBottom >Escribe la cantidad inicial que vas a invertir.</Typography>
                                 <TextField
                                     id="principal"
                                     label="Cantidad inicial"
@@ -133,6 +146,13 @@ export default function CompoundInterestCalculator() {
                                     fullWidth
                                     helperText={errors.principal}
                                     error={!!errors.principal}
+                                    InputProps={{
+                                        startAdornment: (
+                                            <InputAdornment position="start">
+                                                <AttachMoney />
+                                            </InputAdornment>
+                                        ),
+                                    }}
                                 />
                             </Grid>
 
@@ -143,7 +163,7 @@ export default function CompoundInterestCalculator() {
                             {/* Paso 2: Interés */}
                             <Grid item xs={12}>
                                 <Typography variant="h6" gutterBottom>Interés</Typography>
-                                <Typography variant="body1" gutterBottom>Establece la tasa de interés y cómo se capitalizará.</Typography>
+                                <Typography variant="body1" gutterBottom>Ingresa el porcentaje de interés que ganará tu inversión.</Typography>
                                 <Grid container spacing={2}>
                                     <Grid item xs={6}>
                                         <TextField
@@ -157,6 +177,13 @@ export default function CompoundInterestCalculator() {
                                             fullWidth
                                             helperText={errors.rate}
                                             error={!!errors.rate}
+                                            InputProps={{
+                                                endAdornment: (
+                                                    <InputAdornment position="end">
+                                                        <Percent />
+                                                    </InputAdornment>
+                                                ),
+                                            }}
                                         />
                                     </Grid>
                                     <Grid item xs={6}>
@@ -187,7 +214,7 @@ export default function CompoundInterestCalculator() {
 
                             <Grid item xs={12} >
                                 <Typography variant="h6" gutterBottom>Cantidad de Años</Typography>
-                                <Typography variant="body1" gutterBottom>Define cuántos años mantendrás la inversión.</Typography>
+                                <Typography variant="body1" gutterBottom>Elige la duración de tu inversión en años.</Typography>
                                 <TextField
                                     id="time"
                                     label="Tiempo (en años)"
@@ -199,6 +226,13 @@ export default function CompoundInterestCalculator() {
                                     fullWidth
                                     helperText={errors.time}
                                     error={!!errors.time}
+                                    InputProps={{
+                                        startAdornment: (
+                                            <InputAdornment position="start">
+                                                <CalendarToday />
+                                            </InputAdornment>
+                                        ),
+                                    }}
                                 />
                             </Grid>
 
@@ -209,7 +243,7 @@ export default function CompoundInterestCalculator() {
 
                             <Grid item xs={12} >
                                 <Typography variant="h6" gutterBottom>Aportes Periódicos</Typography>
-                                <Typography variant="body1" gutterBottom>Establece los aportes adicionales que harás y su frecuencia.</Typography>
+                                <Typography variant="body1" gutterBottom>Determina tus pagos extras y cuán a menudo los harás.</Typography>
                                 <Grid container spacing={2}>
                                     <Grid item xs={6}>
                                         <TextField
@@ -221,6 +255,13 @@ export default function CompoundInterestCalculator() {
                                             variant="outlined"
                                             margin="normal"
                                             className={styles.formControl}
+                                            InputProps={{
+                                                startAdornment: (
+                                                    <InputAdornment position="start">
+                                                        <AttachMoney />
+                                                    </InputAdornment>
+                                                ),
+                                            }}
                                         />
                                     </Grid>
                                     <Grid item xs={6}>
