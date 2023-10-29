@@ -1,13 +1,12 @@
-import { useState } from 'react';
 import {
     TextField, Button, Select, MenuItem, FormControl, InputLabel, Grid, Box, Typography, Card, CardContent, useTheme, useMediaQuery, Divider, InputAdornment
 } from '@mui/material';
-import AttachMoney from '@mui/icons-material/AttachMoney';
-import CalendarToday from '@mui/icons-material/CalendarToday';
-import Percent from '@mui/icons-material/Percent';
+import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
+import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
+import PercentIcon from '@mui/icons-material/Percent';
 import styles from '../styles/CompoundInterestCalculator.module.css';
 import InvestmentGrowthChart from '../components/charts/InvestmentGrowthChart';
-
+import React, { useState, useEffect } from 'react';
 
 
 export default function CompoundInterestCalculator() {
@@ -19,6 +18,11 @@ export default function CompoundInterestCalculator() {
     const [contributionFrequency, setContributionFrequency] = useState(1);
     const [result, setResult] = useState([]);
     const [errors, setErrors] = useState({});
+    const [finalBalance, setFinalBalance] = useState(0);
+    const [totalInvested, setTotalInvested] = useState(0);
+    const [totalGains, setTotalGains] = useState(0);
+    const [calculateClicked, setCalculateClicked] = useState(false);
+    const [isValid, setIsValid] = useState(false);
     const theme = useTheme();
     const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
     const resetValues = () => {
@@ -29,6 +33,9 @@ export default function CompoundInterestCalculator() {
         setContribution(0);
         setContributionFrequency(1);
         setResult([]);
+        setFinalBalance(0);
+        setTotalInvested(0);
+        setTotalGains(0);
     };
     const validateFields = () => {
         let isValid = true;
@@ -77,30 +84,25 @@ export default function CompoundInterestCalculator() {
         }
 
         setErrors(newErrors);
+        setIsValid(isValid);
         return isValid;
     };
 
-    const getFinalBalance = () => {
-        if (result.length > 0) {
-            return result[result.length - 1].Final_Balance;
-        }
-        return 0;
-    };
+    useEffect(() => {
+        if (calculateClicked) {
+            const finalBalance = result.length > 0 ? result[result.length - 1].Final_Balance : 0;
+            setFinalBalance(finalBalance);
 
-    const getTotalInvested = () => {
-        if (result.length > 0) {
-            const lastItem = result[result.length - 1];
-            return parseFloat(principal) + parseFloat(lastItem.Total_Contributions);
-        }
-        return 0;
-    };
+            const totalInvested = result.length > 0 ? parseFloat(principal) + parseFloat(result[result.length - 1].Total_Contributions) : 0;
+            setTotalInvested(totalInvested);
 
-    const getTotalGains = () => {
-        if (result.length > 0) {
-            return getFinalBalance() - getTotalInvested();
+            const totalGains = finalBalance - totalInvested;
+            setTotalGains(totalGains);
+
+            setCalculateClicked(false);
         }
-        return 0;
-    };
+    }, [calculateClicked]);
+
     const calculateInterest = async () => {
         if (!validateFields()) return;
         const response = await fetch(`${process.env.API_URL}/finance/compound-interest`, {
@@ -122,6 +124,7 @@ export default function CompoundInterestCalculator() {
         const data = await response.json();
         const dataWithInitialInvestment = data.map(item => ({ ...item, Principal: principal }));
         setResult(dataWithInitialInvestment);
+        setCalculateClicked(true);
     };
 
     return (
@@ -140,7 +143,7 @@ export default function CompoundInterestCalculator() {
                                     label="Cantidad inicial"
                                     type="number"
                                     value={principal}
-                                    onChange={(e) => setPrincipal(e.target.value)}
+                                    onChange={(e) => setPrincipal(e.target.value.replace(/^0+/, ''))}
                                     variant="outlined"
                                     margin="normal"
                                     fullWidth
@@ -149,7 +152,7 @@ export default function CompoundInterestCalculator() {
                                     InputProps={{
                                         startAdornment: (
                                             <InputAdornment position="start">
-                                                <AttachMoney />
+                                                <AttachMoneyIcon />
                                             </InputAdornment>
                                         ),
                                     }}
@@ -171,7 +174,7 @@ export default function CompoundInterestCalculator() {
                                             label="Tasa de interés"
                                             type="number"
                                             value={rate}
-                                            onChange={(e) => setRate(e.target.value)}
+                                            onChange={(e) => setRate(e.target.value.replace(/^0+/, ''))}
                                             variant="outlined"
                                             margin="normal"
                                             fullWidth
@@ -180,7 +183,7 @@ export default function CompoundInterestCalculator() {
                                             InputProps={{
                                                 endAdornment: (
                                                     <InputAdornment position="end">
-                                                        <Percent />
+                                                        <PercentIcon />
                                                     </InputAdornment>
                                                 ),
                                             }}
@@ -220,7 +223,7 @@ export default function CompoundInterestCalculator() {
                                     label="Tiempo (en años)"
                                     type="number"
                                     value={time}
-                                    onChange={(e) => setTime(e.target.value)}
+                                    onChange={(e) => setTime(e.target.value.replace(/^0+/, ''))}
                                     variant="outlined"
                                     margin="normal"
                                     fullWidth
@@ -229,7 +232,7 @@ export default function CompoundInterestCalculator() {
                                     InputProps={{
                                         startAdornment: (
                                             <InputAdornment position="start">
-                                                <CalendarToday />
+                                                <CalendarTodayIcon />
                                             </InputAdornment>
                                         ),
                                     }}
@@ -251,14 +254,14 @@ export default function CompoundInterestCalculator() {
                                             label="Aportes periódicos"
                                             type="number"
                                             value={contribution}
-                                            onChange={(e) => setContribution(e.target.value)}
+                                            onChange={(e) => setContribution(e.target.value.replace(/^0+/, ''))}
                                             variant="outlined"
                                             margin="normal"
                                             className={styles.formControl}
                                             InputProps={{
                                                 startAdornment: (
                                                     <InputAdornment position="start">
-                                                        <AttachMoney />
+                                                        <AttachMoneyIcon />
                                                     </InputAdornment>
                                                 ),
                                             }}
@@ -325,11 +328,10 @@ export default function CompoundInterestCalculator() {
             {/* Sección del Gráfico */}
             <Grid item xs={12} md={8} style={{ marginTop: '40px' }}>
                 <Grid container spacing={2}>
-
                     <Grid item xs={12}>
                         <Box textAlign="center" mb={2}>
                             <Typography variant="h3" color="primary" style={{ fontWeight: 'bold' }}>
-                                ${getFinalBalance().toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                                ${finalBalance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                             </Typography>
                             <Typography variant="h6">
                                 Total al final
@@ -343,7 +345,7 @@ export default function CompoundInterestCalculator() {
                                 Tu inversión
                             </Typography>
                             <Typography variant="h5" style={{ fontWeight: 'bold' }}>
-                                ${getTotalInvested().toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                                ${totalInvested.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                             </Typography>
                         </Box>
                     </Grid>
@@ -354,12 +356,12 @@ export default function CompoundInterestCalculator() {
                                 Tus ganancias
                             </Typography>
                             <Typography variant="h5" style={{ fontWeight: 'bold' }}>
-                                ${getTotalGains().toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                                ${totalGains.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                             </Typography>
                         </Box>
                     </Grid>
-
                 </Grid>
+
 
                 <div style={{ width: '100%', height: 400 }}>
                     <InvestmentGrowthChart data={result} />
