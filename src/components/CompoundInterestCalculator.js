@@ -298,7 +298,8 @@ export default function CompoundInterestCalculator() {
             {/* Sección del Gráfico */}
             <Grid item xs={12} md={8}>
                 <div style={{ width: '100%', height: 400 }}>
-                    <InvestmentGrowthChart data={result.length > 0 ? result : dummyData} />
+                    {/* <InvestmentGrowthChart data={result.length > 0 ? result : dummyData} /> */}
+                    <InvestmentGrowthChart data={result} />
                 </div>
             </Grid>
         </Grid>

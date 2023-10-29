@@ -2,23 +2,6 @@ import React, { PureComponent } from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
 export default class InvestmentGrowthChart extends PureComponent {
-    getBarColor = (dataKey, data) => {
-        if (data.isDummy) {
-            const greyShades = ['#636363', '#707070', '#7d7d7d', '#8a8a8a', '#969696'];
-            return greyShades[data.index % greyShades.length]; // Selecciona un tono de gris basado en el índice
-        }
-        switch (dataKey) {
-            case 'Principal':
-                return '#2c3e50'; // Azul oscuro para Inversión inicial
-            case 'Total_Contributions':
-                return '#27ae60'; // Verde para Aportaciones
-            case 'Total_Interest':
-                return '#f39c12'; // Amarillo para Ganancias
-            default:
-                return '#d3d3d3'; // Gris como color por defecto
-        }
-    };
-
     render() {
         const { data } = this.props;
 
@@ -40,9 +23,9 @@ export default class InvestmentGrowthChart extends PureComponent {
                     <YAxis label={{ value: 'Valor ($)', angle: -90, position: 'insideLeft', offset: -10 }} />
                     <Tooltip />
                     <Legend wrapperStyle={{ color: 'black' }} />
-                    <Bar dataKey="Principal" name="Inversión inicial" stackId="a" fill={entry => this.getBarColor('Principal', entry)} />
-                    <Bar dataKey="Total_Contributions" name="Aportaciones" stackId="a" fill={entry => this.getBarColor('Total_Contributions', entry)} />
-                    <Bar dataKey="Total_Interest" name="Ganancias" stackId="a" fill={entry => this.getBarColor('Total_Interest', entry)} />
+                    <Bar dataKey="Principal" name="Inversión inicial" stackId="a" fill="#2c3e50" />
+                    <Bar dataKey="Total_Contributions" name="Aportaciones" stackId="a" fill="#27ae60" />
+                    <Bar dataKey="Total_Interest" name="Ganancias" stackId="a" fill="#f39c12" />
                 </BarChart>
             </ResponsiveContainer>
         );
