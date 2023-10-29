@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { TextField, Button, Select, MenuItem, FormControl, InputLabel, Grid, Box, Typography } from '@mui/material';
+import { TextField, Button, Select, MenuItem, FormControl, InputLabel, Grid, Box, Typography, Card, CardContent } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import styles from '../styles/CompoundInterestCalculator.module.css';
@@ -130,9 +130,6 @@ export default function CompoundInterestCalculator() {
                                 className={`${styles.fullText} ${errors.principal ? styles.errorField : ''}`}
                                 helperText={errors.principal}
                                 error={!!errors.principal}
-                            // FormHelperTextProps={{
-                            //     className: styles.errorText
-                            // }}
                             />
                         </div>
                     </div>
@@ -260,22 +257,43 @@ export default function CompoundInterestCalculator() {
             </Grid>
             {/* Sección del Gráfico */}
             <Grid item xs={12} md={8}>
-                <Grid item xs={12}>
-                    <Box textAlign="center" mb={2}>
-                        <Typography variant="h6">Resumen de la Inversión</Typography>
-                        <Typography variant="h4">{getFinalBalance()}</Typography>
-                        <Grid container justifyContent="space-between" mt={1}>
-                            <Grid item>
-                                <Typography variant="body1">Dinero Invertido</Typography>
-                                <Typography variant="body2">${getTotalInvested().toFixed(2)}</Typography>
-                            </Grid>
-                            <Grid item>
-                                <Typography variant="body1">Total Ganancias</Typography>
-                                <Typography variant="body2">${getTotalGains().toFixed(2)}</Typography>
-                            </Grid>
-                        </Grid>
-                    </Box>
+                <Grid container spacing={2}>
+
+                    <Grid item xs={12}>
+                        <Box textAlign="center" mb={2}>
+                            <Typography variant="h3" color="primary" style={{ fontWeight: 'bold' }}>
+                                {getFinalBalance().toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                            </Typography>
+                            <Typography variant="h6">
+                                Total al final
+                            </Typography>
+                        </Box>
+                    </Grid>
+
+                    <Grid item xs={12} md={6}>
+                        <Box textAlign="center" mb={2} p={2} bgcolor="#f5f5f5" borderRadius={2}>
+                            <Typography variant="body1">
+                                Tu inversión
+                            </Typography>
+                            <Typography variant="h5" style={{ fontWeight: 'bold' }}>
+                                ${getTotalInvested().toFixed(2).toLocaleString()}
+                            </Typography>
+                        </Box>
+                    </Grid>
+
+                    <Grid item xs={12} md={6}>
+                        <Box textAlign="center" mb={2} p={2} bgcolor="#f5f5f5" borderRadius={2}>
+                            <Typography variant="body1">
+                                Tus ganancias
+                            </Typography>
+                            <Typography variant="h5" style={{ fontWeight: 'bold' }}>
+                                ${getTotalGains().toFixed(2).toLocaleString()}
+                            </Typography>
+                        </Box>
+                    </Grid>
+
                 </Grid>
+
                 <div style={{ width: '100%', height: 400 }}>
                     <InvestmentGrowthChart data={result} />
                 </div>
