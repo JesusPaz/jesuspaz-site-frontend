@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import { TextField, Button, Select, MenuItem, FormControl, InputLabel, Grid, Box, Typography, Card, CardContent } from '@mui/material';
-import { useTheme } from '@mui/material/styles';
-import useMediaQuery from '@mui/material/useMediaQuery';
+import {
+    TextField, Button, Select, MenuItem, FormControl, InputLabel, Grid, Box, Typography, Card, CardContent, useTheme, useMediaQuery, Divider
+} from '@mui/material';
 import styles from '../styles/CompoundInterestCalculator.module.css';
 import InvestmentGrowthChart from '../components/charts/InvestmentGrowthChart';
 
@@ -110,153 +110,177 @@ export default function CompoundInterestCalculator() {
     };
 
     return (
-        <Grid container spacing={2}>
+        <Grid container spacing={3} className={styles.mainContainer}>
             {/* Sección de la Calculadora */}
             <Grid item xs={12} md={4}>
-                <div className={styles.calculator}>
-                    {/* Paso 1: Inversión Inicial */}
-                    <div className={styles.step}>
-                        <div className={styles.step}>
-                            <h3>Inversión Inicial</h3>
-                            <p>Define cuánto dinero inicialmente quieres invertir.</p>
-                            <TextField
-                                id="principal"
-                                label="Cantidad inicial"
-                                type="number"
-                                value={principal}
-                                onChange={(e) => setPrincipal(e.target.value)}
-                                variant="outlined"
-                                margin="normal"
-                                className={`${styles.fullText} ${errors.principal ? styles.errorField : ''}`}
-                                helperText={errors.principal}
-                                error={!!errors.principal}
-                            />
-                        </div>
-                    </div>
-                    {/* Paso 2: Interés */}
-                    <div className={styles.step}>
-                        <div className={styles.step}>
-                            <h3>Interés</h3>
-                            <p>Establece la tasa de interés y cómo se capitalizará.</p>
-                            <div className={styles.stepHalf}>
+                <Card className={styles.calculatorCard}>
+                    <CardContent>
+                        <Grid item xs={12} md={12}>
+                            {/* Paso 1: Inversión Inicial */}
+                            <Grid item spacing={2}>
+                                <Typography variant="h6" gutterBottom >Inversión Inicial</Typography>
+                                <Typography variant="body1" gutterBottom >Define cuánto dinero inicialmente quieres invertir.</Typography>
                                 <TextField
-                                    id="rate"
-                                    label="Tasa de interés"
+                                    id="principal"
+                                    label="Cantidad inicial"
                                     type="number"
-                                    value={rate}
-                                    onChange={(e) => setRate(e.target.value)}
+                                    value={principal}
+                                    onChange={(e) => setPrincipal(e.target.value)}
                                     variant="outlined"
                                     margin="normal"
                                     fullWidth
-                                    className={styles.formControl}
-                                    helperText={errors.rate}
-                                    error={!!errors.rate}
+                                    helperText={errors.principal}
+                                    error={!!errors.principal}
                                 />
-                                <FormControl variant="outlined" className={styles.formControl} fullWidth>
-                                    <InputLabel id="frequency-label">Frecuencia de capitalización</InputLabel>
-                                    <Select
-                                        labelId="frequency-label"
-                                        id="frequency"
-                                        value={frequency}
-                                        onChange={(e) => setFrequency(e.target.value)}
-                                        label="Frecuencia de capitalización"
-                                    >
-                                        <MenuItem value={1}>cada año</MenuItem>
-                                        <MenuItem value={2}>dos veces al año</MenuItem>
-                                        <MenuItem value={4}>cada tres meses</MenuItem>
-                                        <MenuItem value={12}>cada mes</MenuItem>
-                                    </Select>
-                                </FormControl>
-                            </div>
-                        </div>
-                    </div>
+                            </Grid>
 
-                    {/* Paso 3: Cantidad de Años */}
-                    <div className={styles.step}>
-                        <div className={styles.step}>
-                            <h3>Cantidad de Años</h3>
-                            <p>Define cuántos años mantendrás la inversión.</p>
-                            <TextField
-                                id="time"
-                                label="Tiempo (en años)"
-                                type="number"
-                                value={time}
-                                onChange={(e) => setTime(e.target.value)}
-                                variant="outlined"
-                                margin="normal"
-                                className={styles.fullText}
-                                helperText={errors.time}
-                                error={!!errors.time}
-                            />
-                        </div>
-                    </div>
+                            <Grid item xs={12}>
+                                <Divider variant="middle" className={styles.divider} />
+                            </Grid>
 
-                    {/* Paso 4: Aportes Periódicos */}
-                    <div className={styles.step}>
-                        <div className={styles.step}>
-                            <h3>Aportes Periódicos</h3>
-                            <p>Establece los aportes adicionales que harás y su frecuencia.</p>
-                            <div className={styles.stepHalf}>
+                            {/* Paso 2: Interés */}
+                            <Grid item xs={12}>
+                                <Typography variant="h6" gutterBottom>Interés</Typography>
+                                <Typography variant="body1" gutterBottom>Establece la tasa de interés y cómo se capitalizará.</Typography>
+                                <Grid container spacing={2}>
+                                    <Grid item xs={6}>
+                                        <TextField
+                                            id="rate"
+                                            label="Tasa de interés"
+                                            type="number"
+                                            value={rate}
+                                            onChange={(e) => setRate(e.target.value)}
+                                            variant="outlined"
+                                            margin="normal"
+                                            fullWidth
+                                            helperText={errors.rate}
+                                            error={!!errors.rate}
+                                        />
+                                    </Grid>
+                                    <Grid item xs={6}>
+                                        <FormControl variant="outlined" fullWidth margin="normal">
+                                            <InputLabel id="frequency-label">Frecuencia de capitalización</InputLabel>
+                                            <Select
+                                                labelId="frequency-label"
+                                                id="frequency"
+                                                value={frequency}
+                                                onChange={(e) => setFrequency(e.target.value)}
+                                                label="Frecuencia de capitalización"
+                                            >
+                                                <MenuItem value={1}>cada año</MenuItem>
+                                                <MenuItem value={2}>dos veces al año</MenuItem>
+                                                <MenuItem value={4}>cada tres meses</MenuItem>
+                                                <MenuItem value={12}>cada mes</MenuItem>
+                                            </Select>
+                                        </FormControl>
+                                    </Grid>
+                                </Grid>
+                            </Grid>
+
+                            <Grid item xs={12}>
+                                <Divider variant="middle" className={styles.divider} />
+                            </Grid>
+
+                            {/* Paso 3: Cantidad de Años */}
+
+                            <Grid item xs={12} >
+                                <Typography variant="h6" gutterBottom>Cantidad de Años</Typography>
+                                <Typography variant="body1" gutterBottom>Define cuántos años mantendrás la inversión.</Typography>
                                 <TextField
-                                    id="contribution"
-                                    label="Aportes periódicos"
+                                    id="time"
+                                    label="Tiempo (en años)"
                                     type="number"
-                                    value={contribution}
-                                    onChange={(e) => setContribution(e.target.value)}
+                                    value={time}
+                                    onChange={(e) => setTime(e.target.value)}
                                     variant="outlined"
                                     margin="normal"
-                                    className={styles.formControl}
+                                    fullWidth
+                                    helperText={errors.time}
+                                    error={!!errors.time}
                                 />
-                                <FormControl variant="outlined" className={styles.formControl} fullWidth>
-                                    <InputLabel id="contribution-frequency-label">Frecuencia de los aportes</InputLabel>
-                                    <Select
-                                        labelId="contribution-frequency-label"
-                                        id="contribution-frequency"
-                                        value={contributionFrequency}
-                                        onChange={(e) => setContributionFrequency(e.target.value)}
-                                        label="Frecuencia de los aportes"
-                                    >
-                                        <MenuItem value={1}>cada año</MenuItem>
-                                        <MenuItem value={2}>dos veces al año</MenuItem>
-                                        <MenuItem value={4}>cada tres meses</MenuItem>
-                                        <MenuItem value={12}>cada mes</MenuItem>
-                                    </Select>
-                                </FormControl>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className={styles.buttonContainer}>
-                        <Grid container spacing={2}>
-                            <Grid item xs={12} sm={6}>
-                                <Button
-                                    variant="outlined"
-                                    color="secondary"
-                                    fullWidth={isSmallScreen}
-                                    onClick={() => resetValues()}
-                                    className={styles.button}
-                                >
-                                    Reiniciar
-                                </Button>
                             </Grid>
-                            <Grid item xs={12} sm={6}>
-                                <Button
-                                    variant="contained"
-                                    color="primary"
-                                    fullWidth={isSmallScreen}
-                                    onClick={calculateInterest}
-                                    className={styles.button}
-                                >
-                                    Calcular
-                                </Button>
+
+                            <Grid item xs={12}>
+                                <Divider variant="middle" className={styles.divider} />
+                            </Grid>
+                            {/* Paso 4: Aportes Periódicos */}
+
+                            <Grid item xs={12} >
+                                <Typography variant="h6" gutterBottom>Aportes Periódicos</Typography>
+                                <Typography variant="body1" gutterBottom>Establece los aportes adicionales que harás y su frecuencia.</Typography>
+                                <Grid container spacing={2}>
+                                    <Grid item xs={6}>
+                                        <TextField
+                                            id="contribution"
+                                            label="Aportes periódicos"
+                                            type="number"
+                                            value={contribution}
+                                            onChange={(e) => setContribution(e.target.value)}
+                                            variant="outlined"
+                                            margin="normal"
+                                            className={styles.formControl}
+                                        />
+                                    </Grid>
+                                    <Grid item xs={6}>
+                                        <FormControl variant="outlined" margin="normal" fullWidth>
+                                            <InputLabel id="contribution-frequency-label">Frecuencia de los aportes</InputLabel>
+                                            <Select
+                                                labelId="contribution-frequency-label"
+                                                id="contribution-frequency"
+                                                value={contributionFrequency}
+                                                onChange={(e) => setContributionFrequency(e.target.value)}
+                                                label="Frecuencia de los aportes"
+                                            >
+                                                <MenuItem value={1}>cada año</MenuItem>
+                                                <MenuItem value={2}>dos veces al año</MenuItem>
+                                                <MenuItem value={4}>cada tres meses</MenuItem>
+                                                <MenuItem value={12}>cada mes</MenuItem>
+                                            </Select>
+                                        </FormControl>
+                                    </Grid>
+                                </Grid>
                             </Grid>
                         </Grid>
-                    </div>
 
-                </div>
-            </Grid>
+                        <Grid item xs={12}>
+                            <Divider variant="middle" className={styles.divider} />
+                        </Grid>
+
+                        {/* Paso 5: Botones */}
+
+                        <Grid className={styles.buttonContainer}>
+                            <Grid container spacing={2}>
+                                <Grid item xs={12} sm={6}>
+                                    <Button
+                                        variant="outlined"
+                                        color="primary"
+                                        fullWidth={isSmallScreen}
+                                        onClick={() => resetValues()}
+                                        className={styles.button}
+                                    >
+                                        Reiniciar
+                                    </Button>
+                                </Grid>
+                                <Grid item xs={12} sm={6}>
+                                    <Button
+                                        variant="contained"
+                                        color="primary"
+                                        fullWidth={isSmallScreen}
+                                        onClick={calculateInterest}
+                                        className={styles.button}
+                                    >
+                                        Calcular
+                                    </Button>
+                                </Grid>
+                            </Grid>
+                        </Grid>
+
+                    </CardContent>
+                </Card >
+            </Grid >
+
             {/* Sección del Gráfico */}
-            <Grid item xs={12} md={8}>
+            < Grid item xs={12} md={8} >
                 <Grid container spacing={2}>
 
                     <Grid item xs={12}>
@@ -297,8 +321,8 @@ export default function CompoundInterestCalculator() {
                 <div style={{ width: '100%', height: 400 }}>
                     <InvestmentGrowthChart data={result} />
                 </div>
-            </Grid>
-        </Grid>
+            </Grid >
+        </Grid >
 
     );
 }

@@ -9,20 +9,11 @@
     border-radius: 8px;
     width: 80%;
     max-width: 600px;
-    box-sizing: border-box;
+    /* box-sizing: border-box; */
     background: linear-gradient(to bottom, #f5f7fa, #e2e8f0);
     background: #ffffff;
     margin-left: 1rem;
     border: 2px solid #ccc;
-}
-
-.formControl,
-.inputField {
-    margin: 0.25rem 0;
-    width: 100%;
-    max-width: 250px;
-    background-color: #ffffff;
-
 }
 
 .result {
@@ -43,8 +34,8 @@
     /* Alinear todo a la izquierda */
     width: 100%;
     /* Asegurarse de que toma todo el ancho */
-    border-bottom: 1px solid #e0e0e0;
-    box-sizing: border-box;
+    /* border-bottom: 1px solid #e0e0e0; */
+    /* box-sizing: border-box; */
     /* Línea divisoria */
 }
 
@@ -54,13 +45,9 @@
     justify-content: space-between;
     align-items: flex-start;
     width: 100%;
-    box-sizing: border-box;
+    /* box-sizing: border-box; */
 }
 
-.step:last-child,
-.stepHalf:last-child {
-    border-bottom: none;
-}
 
 #principal,
 #time {
@@ -77,13 +64,6 @@
 .step p {
     margin-top: 0.5rem;
     /* Ajusta este valor según tus preferencias */
-}
-
-.fullText {
-    margin: 0.25rem 0;
-    width: 100%;
-    /* max-width: 250px; */
-    background-color: #ffffff;
 }
 
 .buttonContainer {
@@ -134,13 +114,13 @@
     /* Color de fondo al pasar el mouse */
 }
 
-.errorText {
+/* .errorText {
     background-color: #f5f7fa;
     background: #f5f7fa;
     padding: 5px 0;
     font-size: 0.8rem;
     color: red;
-}
+} */
 
 .errorField .MuiFormHelperText-root {
     margin: 0;
@@ -170,4 +150,12 @@
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.textFieldMargin {
+    margin-bottom: 16px !important;
+}
+
+.divider {
+    margin: 12px 0;
 }
