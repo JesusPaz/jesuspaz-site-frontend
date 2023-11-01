@@ -32,7 +32,7 @@ const Navbar = () => {
                         <MenuIcon />
                     </IconButton>
                     <Grid container alignItems="center" spacing={1} justifyContent={isMobile ? 'center' : 'flex-start'}>
-                        <Grid item sx={{ ml: isMobile ? '-24px' : '0' }}>
+                        <Grid item sx={{ ml: isMobile ? '-24px' : 4, mr: isMobile ? 0 : 4, mb: '-4px' }}>
                             <Image src="/logo.svg" alt="Logo" width={120} height={60} />
                         </Grid>
                         {isMobile ? null : (
