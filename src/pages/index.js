@@ -1,4 +1,4 @@
-import CompoundInterestCalculator from '../components/CompoundInterestCalculator';
+import CompoundInterestCalculator from '../components/CompoundInterestCalculator/Calculator';
 
 export default function Home() {
     return (
