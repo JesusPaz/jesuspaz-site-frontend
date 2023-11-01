@@ -1,5 +1,6 @@
 import {
-    TextField, Button, Select, MenuItem, FormControl, InputLabel, Grid, Box, Typography, Card, CardContent, useTheme, useMediaQuery, Divider, InputAdornment
+    TextField, Button, Select, MenuItem, FormControl, InputLabel, Grid, Box, Typography, Card, CardContent, useTheme, useMediaQuery, Divider, InputAdornment, Table,
+    TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, styled, CssBaseline 
 } from '@mui/material';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
@@ -7,6 +8,9 @@ import PercentIcon from '@mui/icons-material/Percent';
 import styles from '../styles/CompoundInterestCalculator.module.css';
 import InvestmentGrowthChart from '../components/charts/InvestmentGrowthChart';
 import React, { useState, useEffect } from 'react';
+import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
+
 
 
 export default function CompoundInterestCalculator() {
@@ -23,6 +27,8 @@ export default function CompoundInterestCalculator() {
     const [totalGains, setTotalGains] = useState(0);
     const [calculateClicked, setCalculateClicked] = useState(false);
     const [isValid, setIsValid] = useState(false);
+    const [showError, setShowError] = useState(false);
+    const [errorMessage, setErrorMessage] = useState("");
     const theme = useTheme();
     const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
     const resetValues = () => {
@@ -57,7 +63,7 @@ export default function CompoundInterestCalculator() {
         if (rateNum <= 0) {
             isValid = false;
             newErrors.rate = "⚠️ La tasa de interés debe ser mayor a 0.";
-        } else if (rateNum > 100) {
+        } else if (rateNum > 1000) {
             isValid = false;
             newErrors.rate = "⚠️ La tasa de interés debe ser menor a 100.";
         }
@@ -88,6 +94,31 @@ export default function CompoundInterestCalculator() {
         return isValid;
     };
 
+    const RequiredAsterisk = () => (
+        <span style={{ color: 'red' }}>*</span>
+    );
+
+    const handleCloseSnackbar = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        setShowError(false);
+    };
+
+    const StyledTableContainer = styled(TableContainer)(({ theme }) => ({
+        '&::-webkit-scrollbar': {
+            width: '0.4em',
+        },
+        '&::-webkit-scrollbar-track': {
+            boxShadow: 'inset 0 0 6px rgba(0,0,0,0.00)',
+            webkitBoxShadow: 'inset 0 0 6px rgba(0,0,0,0.00)',
+        },
+        '&::-webkit-scrollbar-thumb': {
+            backgroundColor: theme.palette.primary.main,
+            outline: '1px solid slategrey',
+        },
+    }));
+
     useEffect(() => {
         if (calculateClicked) {
             const finalBalance = result.length > 0 ? result[result.length - 1].Final_Balance : 0;
@@ -105,26 +136,37 @@ export default function CompoundInterestCalculator() {
 
     const calculateInterest = async () => {
         if (!validateFields()) return;
-        const response = await fetch(`${process.env.API_URL}/finance/compound-interest`, {
-            method: 'POST',
-            headers: {
-                'accept': 'application/json',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                principal,
-                rate,
-                time,
-                frequency,
-                contribution,
-                contributionFrequency
-            })
-        });
 
-        const data = await response.json();
-        const dataWithInitialInvestment = data.map(item => ({ ...item, Principal: principal }));
-        setResult(dataWithInitialInvestment);
-        setCalculateClicked(true);
+        try {
+            const response = await fetch(`${process.env.API_URL}/finance/compound-interest`, {
+                method: 'POST',
+                headers: {
+                    'accept': 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    principal,
+                    rate,
+                    time,
+                    frequency,
+                    contribution,
+                    contributionFrequency
+                })
+            });
+
+            if (!response.ok) {
+                throw new Error('The API is not available right now. Please try again later.');
+            }
+
+            const data = await response.json();
+            const dataWithInitialInvestment = data.map(item => ({ ...item, Principal: principal }));
+            setResult(dataWithInitialInvestment);
+            setCalculateClicked(true);
+        } catch (error) {
+            console.error('Error calculating interest:', error);
+            setErrorMessage('There was an error calculating the interest. Please try again later.');
+            setShowError(true);
+        }
     };
 
     return (
@@ -135,8 +177,8 @@ export default function CompoundInterestCalculator() {
                     <CardContent>
                         <Grid item xs={12} md={12}>
                             {/* Paso 1: Inversión Inicial */}
-                            <Grid item spacing={2}>
-                                <Typography variant="h6" gutterBottom >Inversión Inicial</Typography>
+                            <Grid item>
+                                <Typography variant="h6" gutterBottom >Inversión Inicial <RequiredAsterisk /></Typography>
                                 <Typography variant="body1" gutterBottom >Escribe la cantidad inicial que vas a invertir.</Typography>
                                 <TextField
                                     id="principal"
@@ -165,7 +207,7 @@ export default function CompoundInterestCalculator() {
 
                             {/* Paso 2: Interés */}
                             <Grid item xs={12}>
-                                <Typography variant="h6" gutterBottom>Interés</Typography>
+                                <Typography variant="h6" gutterBottom>Interés <RequiredAsterisk /></Typography>
                                 <Typography variant="body1" gutterBottom>Ingresa el porcentaje de interés que ganará tu inversión.</Typography>
                                 <Grid container spacing={2}>
                                     <Grid item xs={6}>
@@ -216,7 +258,7 @@ export default function CompoundInterestCalculator() {
                             {/* Paso 3: Cantidad de Años */}
 
                             <Grid item xs={12} >
-                                <Typography variant="h6" gutterBottom>Cantidad de Años</Typography>
+                                <Typography variant="h6" gutterBottom>Cantidad de Años <RequiredAsterisk /></Typography>
                                 <Typography variant="body1" gutterBottom>Elige la duración de tu inversión en años.</Typography>
                                 <TextField
                                     id="time"
@@ -292,6 +334,11 @@ export default function CompoundInterestCalculator() {
                             <Divider variant="middle" className={styles.divider} />
                         </Grid>
 
+
+                        <Typography variant="body2" color="textSecondary" style={{ marginTop: '10px' }}>
+                            Los campos marcados con <RequiredAsterisk /> son obligatorios.
+                        </Typography>
+
                         {/* Paso 5: Botones */}
 
                         <Grid className={styles.buttonContainer}>
@@ -363,11 +410,70 @@ export default function CompoundInterestCalculator() {
                 </Grid>
 
 
-                <div style={{ width: '100%', height: 400 }}>
+                <Grid style={{ width: '100%', height: 400 }}>
                     <InvestmentGrowthChart data={result} />
-                </div>
-            </Grid>
-        </Grid >
+                </Grid>
 
+                <Grid item xs={12}>
+                    <Box mt={2}>
+                        {result.length > 0 && (
+                            <Typography variant="body1">
+                                ¡Genial! Has hecho una simulación de interés compuesto. Aquí tienes un desglose de los resultados y una breve explicación:
+                                <br /><br />
+                                <Typography variant="body1">
+                                    Con una <strong>Inversión Inicial</strong> de <span style={{ color: 'green' }}>${totalInvested.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>, una <strong>Tasa de Interés Anual</strong> del <span style={{ color: 'green' }}>{rate}%</span>, y un plazo de <strong>{time} años</strong>, tu inversión crecerá a un <strong>Total al Final</strong> de <span style={{ color: 'green' }}>${totalGains.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>. ¡Juega con los valores para ver cómo cambian los resultados y descubre el poder del interés compuesto!
+                                </Typography>
+                                <br />
+                                En el interés compuesto, los intereses que ganas cada periodo se suman al capital inicial, y en el siguiente periodo, ganas intereses sobre ese nuevo total. Es como una bola de nieve que crece cada vez más rápido.
+                            </Typography>
+                        )}
+                    </Box>
+                </Grid>
+
+
+            </Grid>
+            {result.length > 0 && (
+                <Grid item xs={12} sx={{ marginTop: '20px' }}>
+                    <CssBaseline />
+                    <StyledTableContainer component={Paper} sx={{ maxHeight: 500 }}>
+                        <Table stickyHeader aria-label="simple table">
+                            <TableHead>
+                                <TableRow sx={{ backgroundColor: '#f5f5f5' }}> {/* Cambia el color de fondo del encabezado */}
+                                    <TableCell align="center">Año</TableCell>
+                                    <TableCell align="center">Balance Inicial</TableCell>
+                                    <TableCell align="center">Aportaciones Anuales</TableCell>
+                                    <TableCell align="center">Aportaciones Acumuladas</TableCell>
+                                    <TableCell align="center">Interés Devengado</TableCell>
+                                    <TableCell align="center">Interés Acumulado</TableCell>
+                                    <TableCell align="center">Balance Final</TableCell>
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                                {result.map((row, index) => (
+                                    <TableRow
+                                        key={index}
+                                        sx={{ '&:last-child td, &:last-child th': { border: 0 }, '&:hover': { backgroundColor: '#f5f5f5' } }}
+                                    >
+                                        <TableCell component="th" scope="row" align="center">{row.Year}</TableCell>
+                                        <TableCell align="center">${row.Initial_Balance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</TableCell>
+                                        <TableCell align="center">${row.Yearly_Contributions.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</TableCell>
+                                        <TableCell align="center">${row.Total_Contributions.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</TableCell>
+                                        <TableCell align="center">${row.Yearly_Interest.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</TableCell>
+                                        <TableCell align="center">${row.Total_Interest.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</TableCell>
+                                        <TableCell align="center">${row.Final_Balance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</TableCell>
+                                    </TableRow>
+                                ))}
+                            </TableBody>
+                        </Table>
+                    </StyledTableContainer>
+                </Grid>
+            )}
+
+            <Snackbar open={showError} autoHideDuration={6000} onClose={handleCloseSnackbar}>
+                <Alert onClose={handleCloseSnackbar} severity="error" sx={{ width: '100%' }}>
+                    {errorMessage}
+                </Alert>
+            </Snackbar>
+        </Grid >
     );
 }
