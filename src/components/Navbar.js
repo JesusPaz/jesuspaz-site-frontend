@@ -27,22 +27,27 @@ const Navbar = () => {
     return (
         <AppBar position="static" color="primary" sx={{ borderRadius: 0, margin: 0 }}>
             <Container maxWidth={false} disableGutters>
-                <Toolbar>
-                    <IconButton edge="start" color="inherit" aria-label="menu" onClick={handleDrawerToggle} sx={{ mr: 2 }}>
+                <Toolbar sx={{ justifyContent: 'space-between' }}>
+                    <IconButton edge="start" color="inherit" aria-label="menu" onClick={handleDrawerToggle} sx={{ display: { md: 'none' } }}>
                         <MenuIcon />
                     </IconButton>
-                    <Image src="/logo.svg" alt="Logo" width={100} height={50} sx={{ display: { xs: 'none', md: 'block' } }} />
-                    {isMobile ? (
+                    <Grid container alignItems="center" spacing={1} justifyContent={isMobile ? 'center' : 'flex-start'}>
+                        <Grid item sx={{ ml: isMobile ? '-24px' : '0' }}>
+                            <Image src="/logo.svg" alt="Logo" width={120} height={60} />
+                        </Grid>
+                        {isMobile ? null : (
+                            <>
+                                <Grid item><Button color="inherit" component={Link} href="/">Inicio</Button></Grid>
+                                <Grid item><Button color="inherit" component={Link} href="/blog">Blog</Button></Grid>
+                                <Grid item><Button color="inherit" component={Link} href="/videos">Videos</Button></Grid>
+                                <Grid item><Button color="inherit" component={Link} href="/utilidades">Utilidades</Button></Grid>
+                            </>
+                        )}
+                    </Grid>
+                    {isMobile && (
                         <Drawer anchor="left" open={drawerOpen} onClose={handleDrawerToggle}>
                             {drawer}
                         </Drawer>
-                    ) : (
-                        <Grid container alignItems="center" spacing={1}>
-                            <Grid item><Button color="inherit" component={Link} href="/">Inicio</Button></Grid>
-                            <Grid item><Button color="inherit" component={Link} href="/blog">Blog</Button></Grid>
-                            <Grid item><Button color="inherit" component={Link} href="/videos">Videos</Button></Grid>
-                            <Grid item><Button color="inherit" component={Link} href="/utilidades">Utilidades</Button></Grid>
-                        </Grid>
                     )}
                 </Toolbar>
             </Container>
