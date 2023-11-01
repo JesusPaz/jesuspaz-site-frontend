@@ -1,6 +1,6 @@
 import {
     TextField, Button, Select, MenuItem, FormControl, InputLabel, Grid, Box, Typography, Card, CardContent, useTheme, useMediaQuery, Divider, InputAdornment, Table,
-    TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, styled, CssBaseline 
+    TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, styled, CssBaseline
 } from '@mui/material';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
@@ -29,6 +29,8 @@ export default function CompoundInterestCalculator() {
     const [isValid, setIsValid] = useState(false);
     const [showError, setShowError] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
+    const [years, setYears] = useState(0);
+    const [interest, setInterest] = useState(0);
     const theme = useTheme();
     const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
     const resetValues = () => {
@@ -65,7 +67,7 @@ export default function CompoundInterestCalculator() {
             newErrors.rate = "⚠️ La tasa de interés debe ser mayor a 0.";
         } else if (rateNum > 1000) {
             isValid = false;
-            newErrors.rate = "⚠️ La tasa de interés debe ser menor a 100.";
+            newErrors.rate = "⚠️ La tasa de interés debe ser menor a 1000.";
         }
 
         // Validar que la tasa tenga un máximo de 5 decimales
@@ -130,12 +132,21 @@ export default function CompoundInterestCalculator() {
             const totalGains = finalBalance - totalInvested;
             setTotalGains(totalGains);
 
+            const yearsValue = result.length > 0 ? result[result.length - 1].Year : 0;
+            setYears(yearsValue);
+
+            const interestValue = result.length > 0 ? rate : 0;
+            setInterest(interestValue);
+
             setCalculateClicked(false);
         }
     }, [calculateClicked]);
 
+
     const calculateInterest = async () => {
         if (!validateFields()) return;
+
+        const contributionValue = contribution ? contribution : "0";
 
         try {
             const response = await fetch(`${process.env.API_URL}/finance/compound-interest`, {
@@ -149,7 +160,7 @@ export default function CompoundInterestCalculator() {
                     rate,
                     time,
                     frequency,
-                    contribution,
+                    contribution: contributionValue,
                     contributionFrequency
                 })
             });
@@ -418,17 +429,18 @@ export default function CompoundInterestCalculator() {
                     <Box mt={2}>
                         {result.length > 0 && (
                             <Typography variant="body1">
-                                ¡Genial! Has hecho una simulación de interés compuesto. Aquí tienes un desglose de los resultados y una breve explicación:
                                 <br /><br />
-                                <Typography variant="body1">
-                                    Con una <strong>Inversión Inicial</strong> de <span style={{ color: 'green' }}>${totalInvested.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>, una <strong>Tasa de Interés Anual</strong> del <span style={{ color: 'green' }}>{rate}%</span>, y un plazo de <strong>{time} años</strong>, tu inversión crecerá a un <strong>Total al Final</strong> de <span style={{ color: 'green' }}>${totalGains.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>. ¡Juega con los valores para ver cómo cambian los resultados y descubre el poder del interés compuesto!
-                                </Typography>
+                                <strong>¡Felicidades!</strong> Invertiste <span style={{ color: 'green' }}>${totalInvested.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span> y gracias a una tasa de interés anual del <span style={{ color: 'green' }}>{interest}%</span>, en <span style={{ color: 'green' }}>{years} años</span> tu dinero crecerá a <span style={{ color: 'green' }}>${totalGains.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>.
                                 <br />
-                                En el interés compuesto, los intereses que ganas cada periodo se suman al capital inicial, y en el siguiente periodo, ganas intereses sobre ese nuevo total. Es como una bola de nieve que crece cada vez más rápido.
+                                Este es el poder del interés compuesto: tus ganancias se reinvierten y generan más ganancias, ¡como una bola de nieve que crece sin parar!
+                                <br />
+                                Sigue experimentando con diferentes valores y observa cómo tu dinero puede crecer con el tiempo.
                             </Typography>
                         )}
                     </Box>
                 </Grid>
+
+
 
 
             </Grid>
