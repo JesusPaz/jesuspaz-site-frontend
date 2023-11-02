@@ -6,7 +6,7 @@ const theme = createTheme({
             main: '#6d6d6d', // Un gris suave
         },
         secondary: {
-            main: '#b3b3b3', // Un gris más claro para contrastar
+            main: '#f5f5f5', // Un gris más claro para contrastar
         },
         background: {
             default: '#f5f5f5', // Un color de fondo muy claro
