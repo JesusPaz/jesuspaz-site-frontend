@@ -20,45 +20,51 @@ function CompoundInterestExplanation() {
     ];
 
     return (
-        <Box mt={4} p={3} bgcolor="white" color={theme.palette.text.primary} borderRadius={2}>
-            <Grid container spacing={2}>
-                <Grid item xs={12}>
-                    <Typography variant="h4" gutterBottom>
-                        Descubre el Poder del Interés Compuesto
-                    </Typography>
-                </Grid>
-
-                <Grid item xs={12} md={6}>
-                    <Typography variant="body1" paragraph>
-                        El <strong>interés compuesto</strong> es un fenómeno financiero que actúa como una bola de nieve: tus ganancias generan más ganancias, y esas ganancias generan aún más. Al invertir una cantidad de dinero y dejarla crecer, los intereses que ganas en cada periodo también empiezan a generar sus propios intereses.
-                    </Typography>
-                    <Typography variant="body1" paragraph>
-                        A lo largo del tiempo, incluso pequeñas inversiones pueden transformarse en sumas significativas gracias al <strong>interés compuesto</strong>. Este efecto se potencia aún más si realizas aportes regulares a tu inversión. ¡La clave está en la paciencia y la consistencia!
-                    </Typography>
-                </Grid>
-
-                <Grid item xs={12} md={6}>
-                    <Box display="flex" alignItems="center" justifyContent="center" height="100%">
-                        <InfoIcon color="disabled" style={{ fontSize: isSmallScreen ? 100 : 150 }} />
+        <Box mt={4} bgcolor="white" color={theme.palette.text.primary} borderRadius={2}>
+            <Grid container justifyContent="center">
+                <Grid item xs={12} md={10} lg={8}>
+                    <Box p={3}>
+                        <Typography variant="h4" gutterBottom>
+                            Descubre el Poder del Interés Compuesto
+                        </Typography>
                     </Box>
-                </Grid>
 
-                <Grid item xs={12}>
-                    <Typography variant="h5" gutterBottom>
-                        Preguntas Frecuentes sobre el Interés Compuesto
-                    </Typography>
-                    {frequentlyAskedQuestions.map((faq, index) => (
-                        <Accordion key={index} style={{ backgroundColor: theme.palette.grey[200] }}>
-                            <AccordionSummary expandIcon={<ExpandMoreIcon />} style={{ backgroundColor: theme.palette.grey[300] }}>
-                                <Typography color="textSecondary">{faq.question}</Typography>
-                            </AccordionSummary>
-                            <AccordionDetails style={{ backgroundColor: 'white' }}>
-                                <Typography>
-                                    {faq.answer}
+                    <Box p={3}>
+                        <Grid container spacing={2}>
+                            <Grid item xs={12} md={6}>
+                                <Typography variant="body1" paragraph>
+                                    El <strong>interés compuesto</strong> es un fenómeno financiero que actúa como una bola de nieve: tus ganancias generan más ganancias, y esas ganancias generan aún más. Al invertir una cantidad de dinero y dejarla crecer, los intereses que ganas en cada periodo también empiezan a generar sus propios intereses.
                                 </Typography>
-                            </AccordionDetails>
-                        </Accordion>
-                    ))}
+                                <Typography variant="body1" paragraph>
+                                    A lo largo del tiempo, incluso pequeñas inversiones pueden transformarse en sumas significativas gracias al <strong>interés compuesto</strong>. Este efecto se potencia aún más si realizas aportes regulares a tu inversión. ¡La clave está en la paciencia y la consistencia!
+                                </Typography>
+                            </Grid>
+
+                            <Grid item xs={12} md={6}>
+                                <Box display="flex" alignItems="center" justifyContent="center" height="100%">
+                                    <InfoIcon color="disabled" style={{ fontSize: isSmallScreen ? 100 : 150 }} />
+                                </Box>
+                            </Grid>
+                        </Grid>
+                    </Box>
+
+                    <Box p={3}>
+                        <Typography variant="h5" gutterBottom>
+                            Preguntas Frecuentes sobre el Interés Compuesto
+                        </Typography>
+                        {frequentlyAskedQuestions.map((faq, index) => (
+                            <Accordion key={index} style={{ backgroundColor: theme.palette.grey[200] }}>
+                                <AccordionSummary expandIcon={<ExpandMoreIcon />} style={{ backgroundColor: theme.palette.grey[300] }}>
+                                    <Typography color="textSecondary">{faq.question}</Typography>
+                                </AccordionSummary>
+                                <AccordionDetails style={{ backgroundColor: 'white' }}>
+                                    <Typography>
+                                        {faq.answer}
+                                    </Typography>
+                                </AccordionDetails>
+                            </Accordion>
+                        ))}
+                    </Box>
                 </Grid>
             </Grid>
         </Box>
