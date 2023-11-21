@@ -1,10 +1,8 @@
-import CompoundInterestCalculator from '../components/CompoundInterestCalculator/Calculator';
-import Navbar from '../components/Navbar';
+import CompoundInterestCalculator from '../components/compoundInterestCalculator/Calculator';
 
 export default function Home() {
     return (
         <div>
-            <Navbar />
             <CompoundInterestCalculator />
         </div>
     );
