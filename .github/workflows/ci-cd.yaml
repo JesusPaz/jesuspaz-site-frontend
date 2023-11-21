@@ -11,6 +11,7 @@ on:
 env:
   GCP_PROJECT_ID: jesuspaz-com
   GCS_BUCKET: jesuspaz-com
+  API_URL: https://api.jesuspaz.com
 
 jobs:
   build:
@@ -18,7 +19,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
