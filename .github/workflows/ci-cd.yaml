@@ -1,0 +1,59 @@
+name: CI/CD Pipeline for Next.js App
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+env:
+  GCP_PROJECT_ID: jesuspaz-com
+  GCS_BUCKET: jesuspaz-com
+
+jobs:
+  build:
+    name: Build and Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Run Lint
+        run: npm run lint
+
+      - name: Build Next.js App
+        run: npm run build
+
+  deploy:
+    name: Deploy to GCP Bucket
+    needs: build
+    # if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Google Cloud SDK
+        uses: google-github-actions/setup-gcloud@v1
+        with:
+          service_account_key: ${{ secrets.GCP_SA_KEY }}
+          project_id: ${{ env.GCP_PROJECT_ID }}
+
+      - name: Install gsutil
+        run: gcloud components install gsutil
+
+      - name: Copy files to GCS Bucket
+        run: gsutil -m rsync -r -d -x ".*|node_modules|.*\.md" ./out gs://${{ env.GCS_BUCKET }}
+
+      - name: Make Bucket Public
+        run: gsutil iam ch allUsers:objectViewer gs://${{ env.GCS_BUCKET }}
