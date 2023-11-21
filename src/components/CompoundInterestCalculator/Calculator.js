@@ -178,7 +178,7 @@ export default function CompoundInterestCalculator() {
 
             setCalculateClicked(false);
         }
-    }, [calculateClicked]);
+    }, [calculateClicked, principal, rate, result]);
 
     return (
         <>
