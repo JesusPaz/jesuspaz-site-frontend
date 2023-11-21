@@ -15,10 +15,6 @@ class MyDocument extends Document {
                         rel="stylesheet"
                         href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&display=swap"
                     />
-                    <script src="https://unpkg.com/react/umd/react.production.min.js"></script>
-                    <script src="https://unpkg.com/react-dom/umd/react-dom.production.min.js"></script>
-                    <script src="https://unpkg.com/prop-types/prop-types.min.js"></script>
-                    <script src="https://unpkg.com/recharts/umd/Recharts.js"></script>
                 </Head>
                 <body>
                     <Main />
