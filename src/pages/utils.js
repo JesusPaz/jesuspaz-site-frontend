@@ -1,5 +1,5 @@
 import React from 'react';
-import { Grid, Card, CardContent, Typography, CardActionArea, CardMedia } from '@mui/material';
+import { Grid, Card, CardContent, Typography, CardActionArea, CardMedia, Box, Container } from '@mui/material';
 
 const utilidades = [
     {
@@ -12,8 +12,10 @@ const utilidades = [
 
 const Utils = () => {
     return (
-        <>
-            <Typography variant="h2" align="left" gutterBottom>Utilidades</Typography>
+        <Container>
+            <Box marginTop={3}>
+                <Typography variant="h1" align="left" color="primary" gutterBottom>Utilidades</Typography>
+            </Box>
             <Grid container spacing={3}>
                 {utilidades.map((utilidad) => (
                     <Grid item xs={12} sm={6} md={4} key={utilidad.id}>
@@ -38,7 +40,7 @@ const Utils = () => {
                     </Grid>
                 ))}
             </Grid>
-        </>
+        </Container>
     );
 };
 
