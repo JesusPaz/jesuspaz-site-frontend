@@ -3,7 +3,7 @@ import CompoundInterestCalculator from '../components/compoundInterestCalculator
 export default function Home() {
     return (
         <div>
-            <CompoundInterestCalculator />
+
         </div>
     );
 }

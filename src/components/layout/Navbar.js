@@ -8,7 +8,6 @@ import { useTheme } from '@mui/material/styles';
 import Image from 'next/image';
 import useScrollTrigger from '@mui/material/useScrollTrigger';
 
-
 const Navbar = () => {
     const [drawerOpen, setDrawerOpen] = useState(false);
     const theme = useTheme();
