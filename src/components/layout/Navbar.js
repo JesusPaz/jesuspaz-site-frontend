@@ -23,7 +23,7 @@ const Navbar = () => {
             <ListItemButton component={Link} href="/" onClick={handleDrawerToggle}>Inicio</ListItemButton >
             <ListItemButton component={Link} href="/blog" onClick={handleDrawerToggle}>Blog</ListItemButton >
             <ListItemButton component={Link} href="/videos" onClick={handleDrawerToggle}>Videos</ListItemButton >
-            <ListItemButton component={Link} href="/utils" onClick={handleDrawerToggle}>Utilidades</ListItemButton >
+            <ListItemButton component={Link} href="/utilidades" onClick={handleDrawerToggle}>Utilidades</ListItemButton >
         </List>
     );
 
@@ -45,7 +45,7 @@ const Navbar = () => {
                                         <Grid item><Button color="inherit" component={Link} href="/">Inicio</Button></Grid>
                                         <Grid item><Button color="inherit" component={Link} href="/blog">Blog</Button></Grid>
                                         <Grid item><Button color="inherit" component={Link} href="/videos">Videos</Button></Grid>
-                                        <Grid item><Button color="inherit" component={Link} href="/utils">Utilidades</Button></Grid>
+                                        <Grid item><Button color="inherit" component={Link} href="/utilidades">Utilidades</Button></Grid>
                                     </>
                                 )}
                             </Grid>
