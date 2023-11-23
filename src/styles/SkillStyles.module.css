@@ -1,0 +1,8 @@
+.skill-tooltip {
+    font-size: 1em;
+    /* margin-top: -50px; */
+}
+
+.skill-tooltip-arrow::before {
+    background-color: #fff;
+}
