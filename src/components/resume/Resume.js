@@ -2,6 +2,7 @@ import React from 'react';
 import { Paper, Box, Link, Divider } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import { documentToReactComponents } from '@contentful/rich-text-react-renderer';
+import Skills from './Skills';
 
 const formatDate = (dateString) => {
     const options = { year: 'numeric', month: 'short' };
@@ -48,6 +49,8 @@ const Resume = ({ experiences }) => {
                     )}
                 </Paper>
             ))}
+            <Divider style={{ margin: '40px 0' }} />
+            <Skills />
         </Box>
     );
 };
