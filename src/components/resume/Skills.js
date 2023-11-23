@@ -1,12 +1,8 @@
 import React from 'react';
 import { Box, Grid, Tooltip, Zoom, Typography } from '@mui/material';
-import CloudIcon from '@mui/icons-material/Cloud';
-import DockerIcon from '@mui/icons-material/Dock';
-import CodeIcon from '@mui/icons-material/Code';
-import StorageIcon from '@mui/icons-material/Storage';
-import SettingsIcon from '@mui/icons-material/Settings';
+import { FaAws, FaDocker, FaGithub, FaPython } from 'react-icons/fa';
+import { SiMicrosoftazure, SiAnsible, SiChef, SiTerraform, SiJenkins, SiGrafana, SiPrometheus, SiElasticsearch, SiKubernetes, SiHelm, SiGitlab, SiGithubactions, SiBitrise, SiGnubash, SiPowershell } from 'react-icons/si';
 import styles from '../../styles/SkillStyles.module.css';
-
 
 const skillStyle = {
     cursor: 'pointer',
@@ -14,7 +10,7 @@ const skillStyle = {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    height: '120px', // Aumentado el tamaño del Box
+    height: '120px',
     width: '120px',
     borderRadius: '50%',
     margin: 'auto',
@@ -22,7 +18,7 @@ const skillStyle = {
 
 const SkillItem = ({ icon, title }) => {
     return (
-        <Grid item xs={4} sm={3} md={2} lg={1}>
+        <Grid item xs={4} sm={3} md={2} lg={2} style={{ display: 'flex', justifyContent: 'center' }}>
             <Tooltip
                 title={title}
                 placement="bottom"
@@ -42,7 +38,7 @@ const SkillItem = ({ icon, title }) => {
                     onMouseOver={(e) => e.currentTarget.style.transform = 'scale(1.8)'}
                     onMouseOut={(e) => e.currentTarget.style.transform = 'scale(1)'}
                 >
-                    {React.cloneElement(icon, { fontSize: 'large' })}
+                    {React.cloneElement(icon, { fontSize: 'xxx-large' })}
                 </Box>
             </Tooltip>
         </Grid>
@@ -53,16 +49,43 @@ const SkillItem = ({ icon, title }) => {
 
 const Skills = () => {
     return (
-        <Box style={{ padding: '40px', maxWidth: '800px', margin: 'auto' }}>
+        <Box style={{ padding: '40px' }}>
             <Typography variant="h4" style={{ fontWeight: 'bold', marginBottom: '20px', textAlign: 'center' }}>
                 Skills
             </Typography>
-            <Box display="flex" justifyContent="center" flexWrap="wrap">
-                <SkillItem icon={<CloudIcon />} title="AWS" />
-                <SkillItem icon={<CloudIcon />} title="Azure" />
-                <SkillItem icon={<DockerIcon />} title="Docker" />
-                {/* ... otros íconos de habilidades ... */}
-            </Box>
+            <Grid container spacing={2}>
+                {/* Cloud Platforms */}
+                <SkillItem icon={<FaAws />} title="AWS" />
+                <SkillItem icon={<SiMicrosoftazure />} title="Azure" />
+
+                {/* Containerization */}
+                <SkillItem icon={<FaDocker />} title="Docker" />
+                <SkillItem icon={<SiKubernetes />} title="Kubernetes" />
+                <SkillItem icon={<SiHelm />} title="Helm" />
+
+                {/* Infrastructure as Code (IaC) */}
+                <SkillItem icon={<SiTerraform />} title="Terraform" />
+
+                {/* CI/CD */}
+                <SkillItem icon={<SiJenkins />} title="Jenkins" />
+                <SkillItem icon={<SiGitlab />} title="GitLab CI" />
+                <SkillItem icon={<FaGithub />} title="GitHub" />
+                <SkillItem icon={<SiBitrise />} title="Bitrise" />
+
+                {/* Monitoring & Logging */}
+                <SkillItem icon={<SiGrafana />} title="Grafana" />
+                <SkillItem icon={<SiPrometheus />} title="Prometheus" />
+                <SkillItem icon={<SiElasticsearch />} title="Elasticsearch" />
+
+                {/* Scripting */}
+                <SkillItem icon={<FaPython />} title="Python" />
+                <SkillItem icon={<SiGnubash />} title="Bash" />
+                <SkillItem icon={<SiPowershell />} title="PowerShell" />
+
+                {/* Configuration Management */}
+                <SkillItem icon={<SiAnsible />} title="Ansible" />
+                <SkillItem icon={<SiChef />} title="Chef" />
+            </Grid>
         </Box>
     );
 };
