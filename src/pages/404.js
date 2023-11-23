@@ -1,6 +1,7 @@
 import {
     Box, Typography, Container
 } from '@mui/material';
+import Image from 'next/image';
 
 function Custom404() {
     return (
@@ -24,7 +25,7 @@ function Custom404() {
                     },
                 }}
             >
-                <img src="/images/jesus-bailando.gif" alt="Simpsons Gif 1" />
+                <Image src="/images/jesus_dancing.gif" alt="Simpsons Gif 1" width={120} height={240} />
             </Box>
 
         </Container>
