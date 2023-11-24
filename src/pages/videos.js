@@ -22,7 +22,7 @@ const Videos = () => {
     return (
         <Container>
             <Box marginTop={3}>
-                <Typography variant="h1" align="left" color="primary" gutterBottom>Videos</Typography>
+                <Typography variant="h2" align="left" color="primary" gutterBottom>Videos</Typography>
             </Box>
             <Grid container spacing={3}>
                 {videos.map((video) => (

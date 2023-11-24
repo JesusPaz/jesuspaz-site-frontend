@@ -22,7 +22,7 @@ const Blog = () => {
     return (
         <Container>
             <Box marginTop={3}>
-                <Typography variant="h1" align="left" color="primary" gutterBottom>Blog</Typography>
+                <Typography variant="h2" align="left" color="primary" gutterBottom>Blog</Typography>
             </Box>
             <Grid container spacing={3}>
                 {blogs.map((blog) => (
