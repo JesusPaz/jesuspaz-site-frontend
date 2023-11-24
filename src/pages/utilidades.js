@@ -22,7 +22,7 @@ const Utils = () => {
     return (
         <Container>
             <Box marginTop={3}>
-                <Typography variant="h1" align="left" color="primary" gutterBottom>Utilidades</Typography>
+                <Typography variant="h2" align="left" color="primary" gutterBottom>Utilidades</Typography>
             </Box>
             <Grid container spacing={3}>
                 {utilidades.map((utilidad) => (

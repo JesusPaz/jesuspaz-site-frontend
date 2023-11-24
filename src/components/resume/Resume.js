@@ -2,6 +2,8 @@ import React from 'react';
 import { Paper, Box, Link, Divider } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import { documentToReactComponents } from '@contentful/rich-text-react-renderer';
+import Skills from './Skills';
+import styles from '../../styles/Resume.module.css';
 
 const formatDate = (dateString) => {
     const options = { year: 'numeric', month: 'short' };
@@ -29,7 +31,7 @@ const Resume = ({ experiences }) => {
             </Typography>
 
             {experiences.map((exp, index) => (
-                <Paper key={index} elevation={3} style={{ margin: '20px 0', padding: '30px' }}>
+                <Paper key={index} elevation={3} style={{ margin: '20px 0', padding: '30px' }} className={styles.experienceHover}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                         <Typography variant="h6" style={{ fontWeight: 'bold' }}>
                             {exp.roleposition} @
@@ -48,6 +50,8 @@ const Resume = ({ experiences }) => {
                     )}
                 </Paper>
             ))}
+            <Divider style={{ margin: '40px 0' }} />
+            <Skills />
         </Box>
     );
 };
